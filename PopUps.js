@@ -8,7 +8,7 @@ var PopUps = (function() {
  * PopUps
  *
  * @author Natalia Uvarova
- * @version 2.1
+ * @version 2.1.0
  * @year 2013
  */
 
@@ -160,7 +160,8 @@ PopUps.prototype = {
 
             if (!cover.length) {
 
-                cover = $('<div class="' + that._config.classStylesShroudPopup + ' js-popup-cover" style="display: none;"></div>');
+                cover = $('<div class="' + that._config.classStylesShroudPopup + 
+                        ' js-popup-cover" style="display: none;"></div>');
                 cover.appendTo('body');
             } 
 

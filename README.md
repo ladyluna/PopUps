@@ -8,6 +8,8 @@ new PopUps();
 
 new PopUps(params);
 
+,где params - объект с параметрами
+
 Параметры по-умолчанию:
 
  {

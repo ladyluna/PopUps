@@ -41,3 +41,29 @@ new PopUps(params);
     classStylesShroudPopup: 'popups-shroud-popup'
     
   }
+  
+  Примеры шаблонов:
+  
+  Элемент, при клике на который показываем попап:
+  
+ <span class="ny-pseudo-select ny-pseudo-select_datepicker js-popup-link" data-popup-align="left" data-popup="ny-dropdown-afisha-datepicker" data-popup-type="small" tabindex="0">
+   <span class="ny-pseudo-select__content">Календарь</span>
+ </span>
+ 
+ Указаны параметры: 
+ 
+ data-popup-align="left"
+ 
+   Означает что попап будет выровнен по левому краю относительно вызвавшего его элемента
+   Если данный параметр не указать или указать другое значение, тогда выравнивание будет по центру 
+   
+ data-popup="ny-dropdown-afisha-datepicker"
+ 
+   Указываем id элемента попапа, который вызываем 
+   
+ data-popup-type="small"
+ 
+   Указываем тип попапа, в данном случае попап без подложки
+   Если тип не указан или указано другое значение будет вызван попап с подложкой
+   
+   

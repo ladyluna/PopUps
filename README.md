@@ -80,4 +80,13 @@ new PopUps(params);
 
 Попап на подложке:
 
- 
+    <div class="rex-popup rex-popup_auth rex-form-auth js-popup" id="form-auth-popup" style="display: none;">
+       <div class="rex-popup__inner js-popup-inner">
+           <span class="rex-popup__close js-popup-close" title="Закрыть окно">×</span>
+           ...
+       </div>
+    </div>
+    
+  Аналогично попапу без подложки - будет помещен вниз страницы,
+  
+  А также автоматически будет отрисована подложка с указанным классом: params.classStylesShroudPopup

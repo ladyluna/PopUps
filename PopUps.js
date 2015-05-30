@@ -1,244 +1,266 @@
 if (!window.PopUps) {
 
-var PopUps = (function() {
+    var PopUps = (function () {
 
-'use strict';
+        'use strict';
 
-/**
- * PopUps
- *
- * @author Natalia Uvarova
- * @version 2.1.0
- * @year 2013
- */
+        /**
+         * PopUps
+         *
+         * @author Natalia Uvarova
+         * @version 2.3.0
+         */
+         
+        /**
+         * Version 2.2.0
+         * Для попапов без подложки добавила класс активности
+         */
 
-/**
- * @constructor PopUps
- *
- * @param {Object} params параметры
- */
-var PopUps = function(params) {
+        /**
+         * Version 2.3.0
+         * Для попапов на подложке добавлен класс блокировки на html
+         */
 
-    this.init(params);
-};
+        /**
+         * @constructor PopUps
+         *
+         * @param {Object} params параметры
+         */
+        var PopUps = function (params) {
 
-PopUps.prototype = {
+            this.init(params);
+        };
 
-    _config: {
+        PopUps.prototype = {
 
-        popUpLink: '.js-popup-link',
-        popUpClose: '.js-popup-close',
-        popUpCloseSmall: '.js-popup-close-sm',
-        popUp: '.js-popup',
-        popUpInner: '.js-popup-inner',
-        popUpCover: '.js-popup-cover',
-        popUpSmall: '.js-popup-sm',
-        classStylesShroudPopup: 'popups-shroud-popup'
-    },
+            _config: {
 
-    /**
-     * @method init
-     *
-     * @param {Object} params параметры
-     */
-    init: function(params) {
+                popUpLink: '.js-popup-link',
+                popUpClose: '.js-popup-close',
+                popUpCloseSmall: '.js-popup-close-sm',
+                popUp: '.js-popup',
+                popUpInner: '.js-popup-inner',
+                popUpCover: '.js-popup-cover',
+                popUpSmall: '.js-popup-sm',
+                classStylesShroudPopup: 'popups-shroud-popup',
+                classOpen: 'opened'
+            },
 
-        var that = this;
+            /**
+             * @method init
+             *
+             * @param {Object} params параметры
+             */
+            init: function (params) {
 
-        that._config = $.extend({}, that._config, params);
+                var that = this;
 
-        that.popupLink = $(that._config.popUpLink);
-        that.popupClose = $(that._config.popUpClose);
-        that.popupCloseSmall = $(that._config.popUpCloseSmall);
-        that.popup = $(that._config.popUp);
-        that.popupSmall = $(that._config.popUpSmall);
+                that._config = $.extend({}, that._config, params);
 
-        that.binding(); 
-    },
+                that.popupLink = $(that._config.popUpLink);
+                that.popupClose = $(that._config.popUpClose);
+                that.popupCloseSmall = $(that._config.popUpCloseSmall);
+                that.popup = $(that._config.popUp);
+                that.popupSmall = $(that._config.popUpSmall);
 
-    /**
-     * @method binding
-     */
-    binding: function() {
+                that.binding();
+            },
 
-        var that = this;
+            /**
+             * @method binding
+             */
+            binding: function () {
 
-        that.popupLink.on('click', function(event) {
+                var that = this;
 
-            that.showPopUp($(this));
-            event.preventDefault();
-        });
-        
-        that.popupClose.on('click', function(event) {
+                that.popupLink.on('click', function (event) {
 
-            that.hidePopUp();
-            event.preventDefault();
-        });
+                    that.showPopUp($(this));
+                    event.preventDefault();
+                });
 
-        that.popupCloseSmall.on('click', function(event) {
+                that.popupClose.on('click', function (event) {
 
-            that.hidePopUpSmall();
-            event.preventDefault();
-        });
+                    that.hidePopUp();
+                    event.preventDefault();
+                });
 
-        $('body').on('click', function(event) {
+                that.popupCloseSmall.on('click', function (event) {
 
-            if ($(event.target).closest(that._config.popUpInner).length || $(event.target).closest(that._config.popUpSmall).length || $(event.target).closest(that._config.popUpLink).length) {
+                    that.hidePopUpSmall();
+                    event.preventDefault();
+                });
 
-                return;
-                
-            } else {
+                $('body').on('click', function (event) {
 
-                that.hidePopUpSmall();
-                that.hidePopUp();
-            }
-            
-        });
+                    if ($(event.target).closest(that._config.popUpInner).length ||
+                         $(event.target).closest(that._config.popUpSmall).length ||
+                         $(event.target).closest(that._config.popUpLink).length) {
 
-        var resizeWindow = false;
+                        return;
 
-        $(window).resize(function() {
+                    } else {
 
-            if (resizeWindow) {
-                clearTimeout(resizeWindow);
-                resizeWindow = false;
-            }
+                        that.hidePopUpSmall();
+                        that.hidePopUp();
+                    }
 
-            resizeWindow = setTimeout(function() {
+                });
 
-                that.hidePopUpSmall();  
-            }, 80);
+                var resizeWindow = false;
 
-        });
+                $(window).resize(function () {
 
-        return that;
-    },
+                    if (resizeWindow) {
+                        clearTimeout(resizeWindow);
+                        resizeWindow = false;
+                    }
 
-    /**
-     * Показать попап
-     *
-     * @method showPopUp
-     *
-     * @param {jQuery Object} elem элемент при клике на который показываем попап
-     */
-    showPopUp: function(elem) {
+                    resizeWindow = setTimeout(function () {
 
-        var that = this,
-            popup = $('#' + elem.data('popup')),
-            cover = $(that._config.popUpCover),
-            scrollBarWidth;
+                        that.hidePopUpSmall();
+                    }, 80);
 
-        if (elem.data('popupType') && (elem.data('popupType') === 'small')) {
-        /* попапы без подложки */
+                });
 
-            if (popup.css('display') != 'none') {
+                return that;
+            },
 
-                that.hidePopUpSmall(popup);
+            /**
+             * Показать попап
+             *
+             * @method showPopUp
+             *
+             * @param {jQuery Object} elem элемент при клике на который показываем попап
+             */
+            showPopUp: function (elem) {
 
-            } else {
+                var that = this;
+                var popup = $('#' + elem.data('popup')),
+                    cover = $(that._config.popUpCover),
+                    scrollBarWidth;
 
-                that.hidePopUpSmall();
+                if (elem.data('popupType') && (elem.data('popupType') === 'small')) {
+                // попапы без подложки
 
-                popup.appendTo('body');
+                    if (popup.css('display') != 'none') {
 
-                popup.css('top', Math.ceil(elem.offset().top) + elem.outerHeight() + 'px');
+                        that.hidePopUpSmall(popup);
 
-                if (elem.data('popupAlign') && (elem.data('popupAlign') == 'left')) {
+                    } else {
 
-                    popup.css('left', Math.ceil(elem.offset().left) + 'px');
+                        that.hidePopUpSmall();
+
+                        popup.appendTo('body');
+
+                        popup.css('top', Math.ceil(elem.offset().top) + elem.outerHeight() + 'px');
+
+                        if (elem.data('popupAlign') && (elem.data('popupAlign') == 'left')) {
+
+                            popup.css('left', Math.ceil(elem.offset().left) + 'px');
+
+                        } else {
+                            popup.css('left', Math.ceil(elem.offset().left) -
+                             Math.ceil(popup.outerWidth() / 2) +
+                             Math.ceil(elem.outerWidth() / 2) + 'px');
+                        }
+
+                        popup.show();
+
+                        elem.addClass(that._config.classOpen);
+
+                    }
 
                 } else {
-                    popup.css('left', Math.ceil(elem.offset().left) - Math.ceil(popup.outerWidth()/2) + Math.ceil(elem.outerWidth()/2) + 'px');
+                // попапы на подложке
+
+                    if (!cover.length) {
+
+                        cover = $('<div class="' + that._config.classStylesShroudPopup +
+                                 ' js-popup-cover" style="display: none;"></div>');
+                        cover.appendTo('body');
+                    }
+
+                    if (popup.css('display') != 'none') {
+
+                        that.hidePopUp(popup, cover);
+
+                    } else {
+
+                        that.hidePopUpSmall();
+
+                        popup.appendTo('body');
+
+                        popup.show();
+                        cover.show();
+
+                        scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+                        if (!scrollBarWidth || (scrollBarWidth <= 0)) {
+                            scrollBarWidth = 17;
+                        }
+
+                        $('html').css({'overflow': 'hidden', 'margin-right': scrollBarWidth + 'px'});
+                        $('body').css({'overflow': 'hidden'});
+                        $('html').addClass('popups-lock');
+                    }
+
                 }
 
-                popup.show();
-                
-            }
+            },
 
-        } else {
-        /* попапы на подложке */
+            /**
+             * Скрыть попап (с подложкой)
+             *
+             * @method hidePopUp
+             *
+             * @param {jQuery Object} popup попап
+             * @param {jQuery Object} cover подложка
+             */
+            hidePopUp: function (popup, cover) {
 
-            if (!cover.length) {
+                var that = this;
 
-                cover = $('<div class="' + that._config.classStylesShroudPopup + 
-                        ' js-popup-cover" style="display: none;"></div>');
-                cover.appendTo('body');
-            } 
+                popup = popup || that.popup;
+                cover = cover || $(that._config.popUpCover);
 
-            if (popup.css('display') != 'none') {
-
-                that.hidePopUp(popup, cover);
-                
-            } else {
-
-                that.hidePopUpSmall();
-
-                popup.appendTo('body');
-
-                popup.show();
-                cover.show();
-
-                scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
-                
-                if (!scrollBarWidth || (scrollBarWidth <= 0)) {
-                    scrollBarWidth = 17;
+                if (popup.is(':visible')) {
+                    popup.hide();
+                    cover.hide();
+                    $('html').css({'overflow': '', 'margin-right': ''});
+                    $('body').css({'overflow': ''});
+                    $('html').removeClass('popups-lock');
                 }
-                
-                $('html').css({'overflow': 'hidden', 'margin-right': scrollBarWidth + 'px'});
+
+                return that;
+            },
+
+            /**
+             * Скрыть попап (без подложки)
+             *
+             * @method hidePopUpSmall
+             *
+             * @param {jQuery Object} popup
+             */
+            hidePopUpSmall: function (popup) {
+
+                var that = this;
+
+                popup = popup || that.popupSmall;
+
+                if (popup.is(':visible')) {
+                    popup.hide();
+                }
+
+                that.popupLink.removeClass(that._config.classOpen);
+
+                return that;
             }
 
-        }
+        };
 
-    },
+        return PopUps;
 
-    /**
-     * Скрыть попап (с подложкой)
-     *
-     * @method hidePopUp
-     *
-     * @param {jQuery Object} popup попап
-     * @param {jQuery Object} cover подложка
-     */
-    hidePopUp: function(popup, cover) {
-
-        var that = this;
-
-        popup = popup || that.popup;
-        cover = cover || $(that._config.popUpCover);
-
-        if (popup.is(':visible')) {
-            popup.hide();
-            cover.hide();
-            $('html').css({'overflow': '', 'margin-right': ''});
-        }
-
-        return that;
-    },
-
-    /**
-     * Скрыть попап (без подложки)
-     *
-     * @method hidePopUpSmall
-     *
-     * @param {jQuery Object} popup
-     */
-    hidePopUpSmall: function(popup) {
-
-        var that = this;
-
-        popup = popup || that.popupSmall;
-
-        if (popup.is(':visible')) {
-            popup.hide();
-        }
-        
-        return that;
-    }
-
-};
-
-return PopUps;
-
-})();
+    })();
 
 }
